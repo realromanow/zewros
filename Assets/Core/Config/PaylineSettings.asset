@@ -13,5 +13,455 @@ MonoBehaviour:
   m_Name: PaylineSettings
   m_EditorClassIdentifier: 
   gridWidth: 5
-  gridHeight: 3
-  paylines: []
+  gridHeight: 4
+  paylines:
+  - name: Line 1
+    isActive: 1
+    lineColor: {r: 1, g: 0.2, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 3, y: 0}
+    - {x: 4, y: 0}
+  - name: Line 2
+    isActive: 1
+    lineColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 1}
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    - {x: 3, y: 1}
+    - {x: 4, y: 1}
+  - name: Line 3
+    isActive: 1
+    lineColor: {r: 0.2, g: 0.4, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 2}
+    - {x: 1, y: 2}
+    - {x: 2, y: 2}
+    - {x: 3, y: 2}
+    - {x: 4, y: 2}
+  - name: Line 4
+    isActive: 1
+    lineColor: {r: 1, g: 0.8, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 3}
+    - {x: 1, y: 3}
+    - {x: 2, y: 3}
+    - {x: 3, y: 3}
+    - {x: 4, y: 3}
+  - name: Line 5
+    isActive: 1
+    lineColor: {r: 1, g: 0.2, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 0}
+    - {x: 1, y: 1}
+    - {x: 2, y: 2}
+    - {x: 3, y: 1}
+    - {x: 4, y: 0}
+  - name: Line 6
+    isActive: 1
+    lineColor: {r: 0.2, g: 1, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 3}
+    - {x: 1, y: 2}
+    - {x: 2, y: 1}
+    - {x: 3, y: 2}
+    - {x: 4, y: 3}
+  - name: Line 7
+    isActive: 1
+    lineColor: {r: 1, g: 0.6, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 1}
+    - {x: 1, y: 0}
+    - {x: 2, y: 1}
+    - {x: 3, y: 2}
+    - {x: 4, y: 1}
+  - name: Line 8
+    isActive: 1
+    lineColor: {r: 0.6, g: 0.2, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 2}
+    - {x: 1, y: 3}
+    - {x: 2, y: 2}
+    - {x: 3, y: 1}
+    - {x: 4, y: 2}
+  - name: Line 9
+    isActive: 1
+    lineColor: {r: 1, g: 0.2, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 0}
+    - {x: 1, y: 1}
+    - {x: 2, y: 2}
+    - {x: 3, y: 3}
+    - {x: 4, y: 2}
+  - name: Line 10
+    isActive: 1
+    lineColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 3}
+    - {x: 1, y: 2}
+    - {x: 2, y: 1}
+    - {x: 3, y: 0}
+    - {x: 4, y: 1}
+  - name: Line 11
+    isActive: 1
+    lineColor: {r: 0.2, g: 0.4, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 1}
+    - {x: 1, y: 2}
+    - {x: 2, y: 3}
+    - {x: 3, y: 2}
+    - {x: 4, y: 1}
+  - name: Line 12
+    isActive: 1
+    lineColor: {r: 1, g: 0.8, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 2}
+    - {x: 1, y: 1}
+    - {x: 2, y: 0}
+    - {x: 3, y: 1}
+    - {x: 4, y: 2}
+  - name: Line 13
+    isActive: 1
+    lineColor: {r: 1, g: 0.2, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 0}
+    - {x: 1, y: 2}
+    - {x: 2, y: 0}
+    - {x: 3, y: 2}
+    - {x: 4, y: 0}
+  - name: Line 14
+    isActive: 1
+    lineColor: {r: 0.2, g: 1, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 3}
+    - {x: 1, y: 1}
+    - {x: 2, y: 3}
+    - {x: 3, y: 1}
+    - {x: 4, y: 3}
+  - name: Line 15
+    isActive: 1
+    lineColor: {r: 1, g: 0.6, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 1}
+    - {x: 1, y: 3}
+    - {x: 2, y: 1}
+    - {x: 3, y: 3}
+    - {x: 4, y: 1}
+  - name: Line 16
+    isActive: 1
+    lineColor: {r: 0.6, g: 0.2, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 2}
+    - {x: 1, y: 0}
+    - {x: 2, y: 2}
+    - {x: 3, y: 0}
+    - {x: 4, y: 2}
+  - name: Line 17
+    isActive: 1
+    lineColor: {r: 1, g: 0.2, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 0}
+    - {x: 1, y: 1}
+    - {x: 2, y: 0}
+    - {x: 3, y: 1}
+    - {x: 4, y: 0}
+  - name: Line 18
+    isActive: 1
+    lineColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 3}
+    - {x: 1, y: 2}
+    - {x: 2, y: 3}
+    - {x: 3, y: 2}
+    - {x: 4, y: 3}
+  - name: Line 19
+    isActive: 1
+    lineColor: {r: 0.2, g: 0.4, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 1}
+    - {x: 1, y: 0}
+    - {x: 2, y: 2}
+    - {x: 3, y: 0}
+    - {x: 4, y: 1}
+  - name: Line 20
+    isActive: 1
+    lineColor: {r: 1, g: 0.8, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 2}
+    - {x: 1, y: 3}
+    - {x: 2, y: 1}
+    - {x: 3, y: 3}
+    - {x: 4, y: 2}
+  - name: Line 21
+    isActive: 1
+    lineColor: {r: 1, g: 0.2, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 0}
+    - {x: 1, y: 2}
+    - {x: 2, y: 1}
+    - {x: 3, y: 2}
+    - {x: 4, y: 0}
+  - name: Line 22
+    isActive: 1
+    lineColor: {r: 0.2, g: 1, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 3}
+    - {x: 1, y: 1}
+    - {x: 2, y: 2}
+    - {x: 3, y: 1}
+    - {x: 4, y: 3}
+  - name: Line 23
+    isActive: 1
+    lineColor: {r: 1, g: 0.6, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 1}
+    - {x: 1, y: 2}
+    - {x: 2, y: 2}
+    - {x: 3, y: 2}
+    - {x: 4, y: 1}
+  - name: Line 24
+    isActive: 1
+    lineColor: {r: 0.6, g: 0.2, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 2}
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    - {x: 3, y: 1}
+    - {x: 4, y: 2}
+  - name: Line 25
+    isActive: 1
+    lineColor: {r: 1, g: 0.2, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 1}
+    - {x: 3, y: 2}
+    - {x: 4, y: 3}
+  - name: Line 26
+    isActive: 1
+    lineColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 3}
+    - {x: 1, y: 3}
+    - {x: 2, y: 2}
+    - {x: 3, y: 1}
+    - {x: 4, y: 0}
+  - name: Line 27
+    isActive: 1
+    lineColor: {r: 0.2, g: 0.4, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 0}
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    - {x: 3, y: 1}
+    - {x: 4, y: 0}
+  - name: Line 28
+    isActive: 1
+    lineColor: {r: 1, g: 0.8, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 3}
+    - {x: 1, y: 2}
+    - {x: 2, y: 2}
+    - {x: 3, y: 2}
+    - {x: 4, y: 3}
+  - name: Line 29
+    isActive: 1
+    lineColor: {r: 1, g: 0.2, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 0}
+    - {x: 1, y: 3}
+    - {x: 2, y: 0}
+    - {x: 3, y: 3}
+    - {x: 4, y: 0}
+  - name: Line 30
+    isActive: 1
+    lineColor: {r: 0.2, g: 1, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 3}
+    - {x: 1, y: 0}
+    - {x: 2, y: 3}
+    - {x: 3, y: 0}
+    - {x: 4, y: 3}
+  - name: Line 31
+    isActive: 1
+    lineColor: {r: 1, g: 0.6, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 1}
+    - {x: 1, y: 0}
+    - {x: 2, y: 3}
+    - {x: 3, y: 0}
+    - {x: 4, y: 1}
+  - name: Line 32
+    isActive: 1
+    lineColor: {r: 0.6, g: 0.2, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 2}
+    - {x: 1, y: 3}
+    - {x: 2, y: 0}
+    - {x: 3, y: 3}
+    - {x: 4, y: 2}
+  - name: Line 33
+    isActive: 1
+    lineColor: {r: 1, g: 0.2, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 0}
+    - {x: 1, y: 2}
+    - {x: 2, y: 3}
+    - {x: 3, y: 2}
+    - {x: 4, y: 0}
+  - name: Line 34
+    isActive: 1
+    lineColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 3}
+    - {x: 1, y: 1}
+    - {x: 2, y: 0}
+    - {x: 3, y: 1}
+    - {x: 4, y: 3}
+  - name: Line 35
+    isActive: 1
+    lineColor: {r: 0.2, g: 0.4, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 1}
+    - {x: 1, y: 3}
+    - {x: 2, y: 2}
+    - {x: 3, y: 3}
+    - {x: 4, y: 1}
+  - name: Line 36
+    isActive: 1
+    lineColor: {r: 1, g: 0.8, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 2}
+    - {x: 1, y: 0}
+    - {x: 2, y: 1}
+    - {x: 3, y: 0}
+    - {x: 4, y: 2}
+  - name: Line 37
+    isActive: 1
+    lineColor: {r: 1, g: 0.2, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 0}
+    - {x: 1, y: 1}
+    - {x: 2, y: 3}
+    - {x: 3, y: 1}
+    - {x: 4, y: 0}
+  - name: Line 38
+    isActive: 1
+    lineColor: {r: 0.2, g: 1, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 3}
+    - {x: 1, y: 2}
+    - {x: 2, y: 0}
+    - {x: 3, y: 2}
+    - {x: 4, y: 3}
+  - name: Line 39
+    isActive: 1
+    lineColor: {r: 1, g: 0.6, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 1}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 3, y: 0}
+    - {x: 4, y: 1}
+  - name: Line 40
+    isActive: 1
+    lineColor: {r: 0.6, g: 0.2, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 2}
+    - {x: 1, y: 3}
+    - {x: 2, y: 3}
+    - {x: 3, y: 3}
+    - {x: 4, y: 2}
+  - name: Line 41
+    isActive: 1
+    lineColor: {r: 1, g: 0.2, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 2}
+    - {x: 3, y: 0}
+    - {x: 4, y: 0}
+  - name: Line 42
+    isActive: 1
+    lineColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 3}
+    - {x: 1, y: 3}
+    - {x: 2, y: 1}
+    - {x: 3, y: 3}
+    - {x: 4, y: 3}
+  - name: Line 43
+    isActive: 1
+    lineColor: {r: 0.2, g: 0.4, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 1}
+    - {x: 1, y: 1}
+    - {x: 2, y: 0}
+    - {x: 3, y: 1}
+    - {x: 4, y: 1}
+  - name: Line 44
+    isActive: 1
+    lineColor: {r: 1, g: 0.8, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 2}
+    - {x: 1, y: 2}
+    - {x: 2, y: 3}
+    - {x: 3, y: 2}
+    - {x: 4, y: 2}
+  - name: Line 45
+    isActive: 1
+    lineColor: {r: 1, g: 0.2, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 0}
+    - {x: 1, y: 2}
+    - {x: 2, y: 2}
+    - {x: 3, y: 2}
+    - {x: 4, y: 0}
+  - name: Line 46
+    isActive: 1
+    lineColor: {r: 0.2, g: 1, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 3}
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    - {x: 3, y: 1}
+    - {x: 4, y: 3}
+  - name: Line 47
+    isActive: 1
+    lineColor: {r: 1, g: 0.6, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 1}
+    - {x: 1, y: 0}
+    - {x: 2, y: 2}
+    - {x: 3, y: 3}
+    - {x: 4, y: 2}
+  - name: Line 48
+    isActive: 1
+    lineColor: {r: 0.6, g: 0.2, b: 1, a: 1}
+    positions:
+    - {x: 0, y: 2}
+    - {x: 1, y: 3}
+    - {x: 2, y: 1}
+    - {x: 3, y: 0}
+    - {x: 4, y: 1}
+  - name: Line 49
+    isActive: 1
+    lineColor: {r: 1, g: 0.2, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 0}
+    - {x: 1, y: 3}
+    - {x: 2, y: 3}
+    - {x: 3, y: 3}
+    - {x: 4, y: 0}
+  - name: Line 50
+    isActive: 1
+    lineColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+    positions:
+    - {x: 0, y: 1}
+    - {x: 1, y: 2}
+    - {x: 2, y: 0}
+    - {x: 3, y: 2}
+    - {x: 4, y: 1}
