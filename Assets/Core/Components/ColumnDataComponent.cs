@@ -1,7 +1,7 @@
 using UnityEngine;
 
-namespace Core.Data {
-	public class ColumnData : MonoBehaviour {
+namespace Core.Components {
+	public class ColumnDataComponent : MonoBehaviour {
 		[SerializeField]
 		private Transform[] _joints;
 		

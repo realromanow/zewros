@@ -1,5 +1,6 @@
 using AYellowpaper.SerializedCollections;
 using Core.App;
+using Core.Components;
 using Core.Data;
 using Core.UI;
 using Core.Views;
@@ -14,7 +15,7 @@ namespace Core.Units {
 		private SerializedDictionary<string, GameObject> _screens;
 		
 		[SerializeField]
-		private GameFieldData _gameFieldData;
+		private GameFieldComponent _gameFieldComponent;
 
 		[SerializeField]
 		private SerializedDictionary<SymbolId, Sprite> _symbolsCards;
@@ -30,10 +31,10 @@ namespace Core.Units {
 			componentsRegistry.Instantiate<SymbolsPacksFactory>();
 			componentsRegistry.Instantiate<SymbolsViewsFactory>(_symbolsCards, _symbolViewPrefab);
 
-			componentsRegistry.Instantiate<GameFieldProvider>(Instantiate(_gameFieldData));
+			componentsRegistry.Instantiate<GameFieldProvider>(Instantiate(_gameFieldComponent));
 			componentsRegistry.Instantiate<GameFieldFillerService>();
 
-			componentsRegistry.Instantiate<GameService>().StartGame();
+			componentsRegistry.Instantiate<GameController>().StartGame();
 		}
 	}
 }

@@ -1,4 +1,4 @@
-using Core.Data;
+using Core.Components;
 using Core.Models;
 using Core.ViewModels;
 using UniRx;
@@ -12,7 +12,7 @@ namespace Core.App {
 			_symbolsViewsFactory = symbolsViewsFactory;
 		}
 
-		public void FillField (SymbolsPackModel[] symbolsPacks, GameFieldData field, ReactiveCommand expireCommand) {
+		public void FillField (SymbolsPackModel[] symbolsPacks, GameFieldComponent field, ReactiveCommand expireCommand) {
 			var order = 0;
 
 			if (symbolsPacks.Length != field.columns.Length) throw new System.ArgumentException("symbols packs length not equals field columns length");

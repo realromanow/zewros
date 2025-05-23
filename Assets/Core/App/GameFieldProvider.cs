@@ -1,10 +1,10 @@
-using Core.Data;
+using Core.Components;
 
 namespace Core.App {
 	public class GameFieldProvider {
-		public GameFieldData activeField { get; }
+		public GameFieldComponent activeField { get; }
 		
-		public GameFieldProvider (GameFieldData activeField) {
+		public GameFieldProvider (GameFieldComponent activeField) {
 			this.activeField = activeField;
 		}
 	}

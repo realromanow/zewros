@@ -6,7 +6,7 @@ using System.Linq;
 using UniRx;
 
 namespace Core.App {
-	public class GameService : IDisposable {
+	public class GameController : IDisposable {
 		private readonly ReactiveCommand _expireCommand = new();
 
 		private readonly CoreUIService _uiService;
@@ -15,7 +15,7 @@ namespace Core.App {
 		private readonly GameFieldProvider _fieldProvider;
 		private readonly CompositeDisposable _compositeDisposable = new();
 
-		public GameService (
+		public GameController (
 			CoreUIService uiService,
 			GameFieldFillerService fieldFillerService,
 			GameFieldProvider fieldProvider,
