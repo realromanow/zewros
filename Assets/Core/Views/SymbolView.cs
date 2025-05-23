@@ -10,6 +10,9 @@ namespace Core.Views {
 		private SpriteRenderer _spriteRenderer;
 
 		[SerializeField]
+		private float _startDelay;
+		
+		[SerializeField]
 		private float _defaultDelay;
 
 		[SerializeField]
@@ -19,17 +22,32 @@ namespace Core.Views {
 			base.RegisterInitialize();
 
 			item.expire
-				.Subscribe(_ =>
-					transform.DOLocalRotate(new Vector3(0f, 0f, 0f), _defaultDuration)
+				.Skip(1)
+				.Take(1)
+				.Subscribe(_ => Destroy(this.gameObject))
+				.AddTo(bindingDisposable);
+			
+			item.expire
+				.Take(1)
+				.Subscribe(_ => {
+					transform.DOComplete();
+
+					transform.DOLocalMoveY(-10f, _defaultDuration)
 						.SetEase(Ease.InOutBounce)
-						.SetDelay(_defaultDelay * item.context.order)
-						.OnComplete(OnPostExpireAnimationCall))
+						.SetDelay(_startDelay + (_defaultDelay * item.context.order));
+				})
 				.AddTo(bindingDisposable);
 
 			transform.DOLocalMoveY(0f, _defaultDuration)
 				.SetEase(Ease.OutBounce)
-				.SetDelay(_defaultDelay * (item.context.order + item.context.ordersLength))
+				.SetDelay(_startDelay + (_defaultDelay * (item.context.order + item.context.ordersLength)))
 				.OnComplete(OnPostCreateAnimationCall);
+		}
+
+		protected override void RegisterDestroy () {
+			transform.DOKill();
+			
+			base.RegisterDestroy();
 		}
 
 		private void OnPostExpireAnimationCall () {
@@ -44,8 +62,8 @@ namespace Core.Views {
 
 		private void OnPostCreateAnimationCall () {
 			// transform.DOLocalRotate(new Vector3(0f, 0f, item.order % 2 == 0 ? 10f : -10f), _defaultDuration)
-			transform.DOLocalRotate(new Vector3(0f, 0f, Random.Range(0, 3) % 2 == 0 ? 10f : -10f), _defaultDuration)
-				.SetEase(Ease.InOutBounce);
+			//transform.DOLocalRotate(new Vector3(0f, 0f, Random.Range(0, 3) % 2 == 0 ? 10f : -10f), _defaultDuration)
+				//.SetEase(Ease.InOutBounce);
 		}
 
 		public void SetSprite (Sprite sprite) {

@@ -12,8 +12,8 @@ namespace Core.App {
 			_uiService = uiService;
 		}
 
-		public void ShowSlotsControlsScreen (Action<Unit> onSpin, ICollection<IDisposable> disposables) {
-			var viewModel = new SlotsControlsScreenViewModel();
+		public void ShowSlotsControlsScreen (Action<Unit> onSpin, IObservable<bool> canSpin, ICollection<IDisposable> disposables) {
+			var viewModel = new SlotsControlsScreenViewModel(canSpin);
 			viewModel.spin.Subscribe(onSpin)
 				.AddTo(disposables);
 

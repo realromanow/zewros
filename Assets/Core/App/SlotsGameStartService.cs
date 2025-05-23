@@ -4,19 +4,19 @@ using UniRx;
 namespace Core.App {
 	public class SlotsGameStartService : IDisposable {
 		private readonly SlotsGameScreenService _screenService;
-		private readonly SlotsGameService _slotsGameService;
+		private readonly SlotsRoundService _slotsRoundService;
 
 		private readonly CompositeDisposable _compositeDisposable = new();
 		
 		public SlotsGameStartService (
-			SlotsGameService slotsGameService,
+			SlotsRoundService slotsRoundService,
 			SlotsGameScreenService screenService) {
-			_slotsGameService = slotsGameService;
+			_slotsRoundService = slotsRoundService;
 			_screenService = screenService;
 		}
 
 		public void StartGame () {
-			_screenService.ShowSlotsControlsScreen(_ => _slotsGameService.MakeSpin(), _compositeDisposable);
+			_screenService.ShowSlotsControlsScreen(_ => _slotsRoundService.MakeSpin(), _slotsRoundService.canSpin, _compositeDisposable);
 		}
 
 		public void Dispose() {

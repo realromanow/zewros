@@ -36,7 +36,7 @@ namespace Core.Units {
 			componentsRegistry.Instantiate<SlotsGameFieldProvider>(Instantiate(_viewContextPrefab));
 			componentsRegistry.Instantiate<SlotsGameViewBuilderService>();
 
-			componentsRegistry.Instantiate<SlotsGameService>();
+			componentsRegistry.Instantiate<SlotsRoundService>();
 			componentsRegistry.Instantiate<SlotsGameScreenService>();
 			componentsRegistry.Instantiate<SlotsGameStartService>().StartGame();
 		}

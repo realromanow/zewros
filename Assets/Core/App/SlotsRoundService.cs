@@ -1,12 +1,14 @@
 using Core.Factories;
 using Core.Models;
 using System;
-using System.Globalization;
 using UniRx;
 
 namespace Core.App {
-	public class SlotsGameService : IDisposable {
-		private readonly ReactiveCommand _expireCommand = new();
+	public class SlotsRoundService : IDisposable {
+		public IReadOnlyReactiveProperty<bool> canSpin => _canSpin;
+		
+		private readonly ReactiveCommand _newRound = new();
+		private readonly ReactiveProperty<bool> _canSpin =  new(true);
 		
 		private readonly SymbolsPacksFactory _symbolsPacksFactory;
 		private readonly SlotsGameViewBuilderService _viewBuilderService;
@@ -15,7 +17,7 @@ namespace Core.App {
 		private readonly CompositeDisposable _compositeDisposable = new();
 
 
-		public SlotsGameService (
+		public SlotsRoundService (
 			SymbolsPacksFactory symbolsPacksFactory,
 			SlotsGameViewBuilderService viewBuilderService,
 			SlotsGameFieldProvider fieldProvider) {
@@ -25,7 +27,7 @@ namespace Core.App {
 		}
 
 		public void MakeSpin () {
-			_expireCommand.Execute();
+			_newRound.Execute();
 			
 			var packsCreated = 0;
 			var context = _fieldProvider.activeField.Value;
@@ -37,11 +39,11 @@ namespace Core.App {
 
 				symbolsPacks[i] =
 					_symbolsPacksFactory
-						.GetPack(DateTime.UtcNow.ToString(CultureInfo.InvariantCulture) + packsCreated++,
+						.GetPack(DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ") + packsCreated++,
 							packLength);
 			}
 			
-			_viewBuilderService.BuildViews(symbolsPacks, context, _expireCommand, _compositeDisposable);
+			_viewBuilderService.BuildViews(symbolsPacks, context, _newRound, _compositeDisposable);
 		}
 
 		public void Dispose () {

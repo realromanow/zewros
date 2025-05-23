@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bindId: 
   _spriteRenderer: {fileID: 2056657160465022930}
+  _startDelay: 0.2
   _defaultDelay: 0.1
   _defaultDuration: 0.1
 --- !u!212 &2056657160465022930
