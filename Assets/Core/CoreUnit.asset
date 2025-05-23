@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a350154e6fd146e793f7727718149ed5, type: 3}
   m_Name: CoreUnit
   m_EditorClassIdentifier: 
+  _viewContextPrefab: {fileID: 7679415858898665763, guid: 9b88dfc863ba14d0baebf147d4e4cceb, type: 3}
   _screens:
     _serializedList:
     - Key: canvas
       Value: {fileID: 1050511255248871344, guid: eef0e802e1f91419f971fc2d9bea59e1, type: 3}
     - Key: controls_screen
       Value: {fileID: 5884955696457401652, guid: fb98203aaba514574978c69b3056ea48, type: 3}
-  _gameFieldComponent: {fileID: 7679415858898665763, guid: 9b88dfc863ba14d0baebf147d4e4cceb, type: 3}
   _symbolsCards:
     _serializedList:
     - Key: 0

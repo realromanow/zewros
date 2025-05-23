@@ -1,11 +1,16 @@
+using System;
 using UniRx;
 
 namespace Core.UI.ViewModels {
-	public class SlotsControlsScreenViewModel {
-		public ReactiveCommand spin { get; }
+	public class SlotsControlsScreenViewModel : IDisposable {
+		public ReactiveCommand spin { get; } = new();
+
+		public void Spin () {
+			spin.Execute();
+		}
 		
-		public SlotsControlsScreenViewModel (ReactiveCommand spin) {
-			this.spin = spin;
+		public void Dispose () {
+			spin.Dispose();
 		}
 	}
 }

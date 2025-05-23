@@ -4,7 +4,7 @@ using Core.Views;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Core.App {
+namespace Core.Factories {
 	public class SymbolsViewsFactory {
 		private readonly IDictionary<SymbolId, Sprite> _symbolsCards;
 		private readonly SymbolView _symbolViewPrefab;

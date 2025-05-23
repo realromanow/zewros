@@ -1,21 +1,28 @@
+using Core.Context;
 using Core.Data;
 using Core.Models;
+using System;
 using UniRx;
 
 namespace Core.ViewModels {
-	public class SymbolViewModel {
-		public ReactiveCommand expire { get; }
+	public class SymbolViewModel : IDisposable {
+		public ReactiveCommand expire { get; } = new();
+		public SymbolViewContext context { get; }
 		public SymbolId id => _symbolModel.id;
-		public int order { get; }
-		public int selfPackLength { get; }
 
 		private readonly SymbolModel _symbolModel;
 
-		public SymbolViewModel (SymbolModel symbolModel, int order, int selfPackLength, ReactiveCommand expire) {
+		public SymbolViewModel (SymbolModel symbolModel, SymbolViewContext context) {
 			_symbolModel = symbolModel;
-			this.order = order;
-			this.selfPackLength = selfPackLength;
-			this.expire = expire;
+			this.context = context;
+		}
+
+		public void Expire () {
+			expire.Execute();
+		}
+		
+		public void Dispose () {
+			expire.Dispose();
 		}
 	}
 }

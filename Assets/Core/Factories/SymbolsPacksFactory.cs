@@ -3,7 +3,7 @@ using Core.Models;
 using System;
 using System.Linq;
 
-namespace Core.App {
+namespace Core.Factories {
 	public class SymbolsPacksFactory {
 		public SymbolsPackModel GetPack (string seed, int packLength) {
 			var numericSeed = seed.GetHashCode();

@@ -22,13 +22,13 @@ namespace Core.Views {
 				.Subscribe(_ =>
 					transform.DOLocalRotate(new Vector3(0f, 0f, 0f), _defaultDuration)
 						.SetEase(Ease.InOutBounce)
-						.SetDelay(_defaultDelay * item.order)
+						.SetDelay(_defaultDelay * item.context.order)
 						.OnComplete(OnPostExpireAnimationCall))
 				.AddTo(bindingDisposable);
 
 			transform.DOLocalMoveY(0f, _defaultDuration)
 				.SetEase(Ease.OutBounce)
-				.SetDelay(_defaultDelay * (item.order + item.selfPackLength))
+				.SetDelay(_defaultDelay * (item.context.order + item.context.ordersLength))
 				.OnComplete(OnPostCreateAnimationCall);
 		}
 
@@ -44,8 +44,8 @@ namespace Core.Views {
 
 		private void OnPostCreateAnimationCall () {
 			// transform.DOLocalRotate(new Vector3(0f, 0f, item.order % 2 == 0 ? 10f : -10f), _defaultDuration)
-			// transform.DOLocalRotate(new Vector3(0f, 0f, Random.Range(0, 3) % 2 == 0 ? 10f : -10f), _defaultDuration)
-			// 	.SetEase(Ease.InOutBounce);
+			transform.DOLocalRotate(new Vector3(0f, 0f, Random.Range(0, 3) % 2 == 0 ? 10f : -10f), _defaultDuration)
+				.SetEase(Ease.InOutBounce);
 		}
 
 		public void SetSprite (Sprite sprite) {
