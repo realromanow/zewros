@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a350154e6fd146e793f7727718149ed5, type: 3}
+  m_Name: CoreUnit
+  m_EditorClassIdentifier: 
+  _screens:
+    _serializedList:
+    - Key: canvas
+      Value: {fileID: 1050511255248871344, guid: eef0e802e1f91419f971fc2d9bea59e1, type: 3}
+    - Key: controls_screen
+      Value: {fileID: 5884955696457401652, guid: fb98203aaba514574978c69b3056ea48, type: 3}
+  _gameFieldData: {fileID: 7679415858898665763, guid: 9b88dfc863ba14d0baebf147d4e4cceb, type: 3}
+  _symbolsCards:
+    _serializedList:
+    - Key: 0
+      Value: {fileID: 21300000, guid: c802840d998ca429fbbc3b09f2a85fa2, type: 3}
+    - Key: 1
+      Value: {fileID: 21300000, guid: 398da1e4d9b1348ffaa7a8512dfbae1f, type: 3}
+    - Key: 2
+      Value: {fileID: 21300000, guid: 021d2e9ea47224268b7f35e35d837d50, type: 3}
+    - Key: 3
+      Value: {fileID: 21300000, guid: c608018be839349ae81af75ad8a8da8f, type: 3}
+    - Key: 4
+      Value: {fileID: 21300000, guid: c2f0a520cd7044f1b9c50bf3635e86b9, type: 3}
+    - Key: 5
+      Value: {fileID: 21300000, guid: 30bd05839a2ee45c8ad1f47700a0f935, type: 3}
+    - Key: 6
+      Value: {fileID: 21300000, guid: 04a54fbe34ce34b9d815cbb373611b3c, type: 3}
+    - Key: 7
+      Value: {fileID: 21300000, guid: d1e2052b95c6d4194a92796e2eccfe95, type: 3}
+    - Key: 8
+      Value: {fileID: 21300000, guid: 2f6a762f227344b65a38ed6196e0e5cb, type: 3}
+    - Key: 9
+      Value: {fileID: 21300000, guid: 005e97a8e1c0147dc93b55630660c63e, type: 3}
+    - Key: 10
+      Value: {fileID: 21300000, guid: be2ae0fb4b0db4b7696e0f8ee28252d0, type: 3}
+  _symbolViewPrefab: {fileID: 6204332918011709743, guid: 5a3f3417c8b9f4c90b70e307cb74ef8a, type: 3}
