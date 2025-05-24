@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Core.Factories {
 	public class SymbolsPacksFactory {
-		public SymbolsPackModel GetPack (string seed, int packLength) {
+		public virtual SymbolsPackModel GetPack (string seed, int packLength) {
 			var numericSeed = seed.GetHashCode();
 			
 			var random = new Random(numericSeed);

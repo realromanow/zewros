@@ -16,7 +16,7 @@ namespace Core.Config {
 	}
 
 	[CustomEditor(typeof(PaylineSettings))]
-	public class PaylineSettingsEditor : Editor {
+	public class PaylineSettingsEditor : UnityEditor.Editor {
 		private PaylineSettings settings;
 		private int selectedPaylineIndex = -1;
 		private Vector2 scrollPosition;

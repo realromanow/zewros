@@ -44,3 +44,5 @@ MonoBehaviour:
     - Key: 10
       Value: {fileID: 21300000, guid: be2ae0fb4b0db4b7696e0f8ee28252d0, type: 3}
   _symbolViewPrefab: {fileID: 6204332918011709743, guid: 5a3f3417c8b9f4c90b70e307cb74ef8a, type: 3}
+  _paylineSettings: {fileID: 11400000, guid: bd92d846bfad040088e1814ffca4e475, type: 2}
+  _payoutSettings: {fileID: 11400000, guid: 5914923b92ec048ed98374cbc0158d86, type: 2}
