@@ -36,8 +36,9 @@ namespace Core.Units {
 			base.SetupUnit(componentsRegistry);
 
 			componentsRegistry.Instantiate<CoreUIService>(_screens);
-            
-			componentsRegistry.Instantiate<TestSymbolsPacksFactory>();
+			componentsRegistry.Instantiate<AnimationSpeedService>();
+			
+			componentsRegistry.Instantiate<SymbolsPacksFactory>();
 			componentsRegistry.Instantiate<SymbolsViewModelsFactory>();
 			componentsRegistry.Instantiate<SymbolsViewsFactory>(_symbolsCards, _symbolViewPrefab);
 
@@ -52,6 +53,9 @@ namespace Core.Units {
 			FindObjectOfType<DebugPanel>()
 				.Initialize(componentsRegistry.Return<TestSymbolsPacksFactory>(),
 					componentsRegistry.Return<WinningSymbolsService>());
+			
+			// FindObjectOfType<SpeedToggle>()
+			// 	.Initialize(componentsRegistry.Return<AnimationSpeedService>());
 		}
 	}
 }

@@ -23,12 +23,11 @@ namespace Core.App {
 			var viewModelGrid = new SymbolViewModel[symbolsPacks.Length, context.columns[0].joints.Length];
             
 			for (var i = 0; i < symbolsPacks.Length; i++) {
-				var viewModels = _symbolsViewModelsFactory.CreateViewModel(symbolsPacks[i], ref order, disposables);
+				var viewModels = _symbolsViewModelsFactory.CreateViewModel(symbolsPacks[i], ref order, viewModelGrid.Length, disposables);
 
 				for (var j = 0; j < viewModels.Length; j++) {
 					var symbolViewModel = viewModels[j];
-                    
-					// Сохраняем позицию символа в сетке
+					
 					symbolViewModel.SetGridPosition(i, j);
 					viewModelGrid[i, j] = symbolViewModel;
                     

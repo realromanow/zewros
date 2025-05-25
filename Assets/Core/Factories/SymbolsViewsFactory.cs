@@ -8,17 +8,23 @@ namespace Core.Factories {
 	public class SymbolsViewsFactory {
 		private readonly IDictionary<SymbolId, Sprite> _symbolsCards;
 		private readonly SymbolView _symbolViewPrefab;
+		private readonly AnimationSpeedService _animationSpeedService;
 
-		public SymbolsViewsFactory (IDictionary<SymbolId, Sprite> symbolsCards, SymbolView symbolViewPrefab) {
+		public SymbolsViewsFactory (
+			IDictionary<SymbolId, Sprite> symbolsCards, 
+			SymbolView symbolViewPrefab,
+			AnimationSpeedService animationSpeedService) {
 			_symbolsCards = symbolsCards;
 			_symbolViewPrefab = symbolViewPrefab;
+			_animationSpeedService = animationSpeedService;
 		}
 
 		private void CreateView (SymbolViewModel viewModel, Transform parent) {
 			var sprite = _symbolsCards[viewModel.id];
-			
+            
 			var instance = Object.Instantiate(_symbolViewPrefab, parent, false);
-			
+            
+			instance.InjectDependencies(_animationSpeedService);
 			instance.SetItem(viewModel, viewModel.GetHashCode().ToString());
 			instance.SetSprite(sprite);
 		}
