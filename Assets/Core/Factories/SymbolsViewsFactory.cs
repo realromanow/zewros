@@ -19,21 +19,19 @@ namespace Core.Factories {
 			_animationSpeedService = animationSpeedService;
 		}
 
-		private void CreateView (SymbolViewModel viewModel, Transform parent) {
+		private void CreateView (SymbolViewModel viewModel) {
 			var sprite = _symbolsCards[viewModel.id];
             
-			var instance = Object.Instantiate(_symbolViewPrefab, parent, false);
+			var instance = Object.Instantiate(_symbolViewPrefab);
             
 			instance.InjectDependencies(_animationSpeedService);
 			instance.SetItem(viewModel, viewModel.GetHashCode().ToString());
 			instance.SetSprite(sprite);
 		}
 
-		public void PackToView (SymbolViewModel[] viewModels, Transform[] joints) {
-			if (viewModels.Length != joints.Length) throw new System.Exception("viewModels length not equals joints length");
-
+		public void PackToView (SymbolViewModel[] viewModels) {
 			for (var i = 0; i < viewModels.Length; i++) {
-				CreateView(viewModels[i], joints[i]);
+				CreateView(viewModels[i]);
 			}
 		}
 	}

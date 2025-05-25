@@ -23,7 +23,7 @@ namespace Core.App {
 			var viewModelGrid = new SymbolViewModel[symbolsPacks.Length, context.columns[0].joints.Length];
             
 			for (var i = 0; i < symbolsPacks.Length; i++) {
-				var viewModels = _symbolsViewModelsFactory.CreateViewModel(symbolsPacks[i], ref order, viewModelGrid.Length, disposables);
+				var viewModels = _symbolsViewModelsFactory.CreateViewModel(symbolsPacks[i], ref order, viewModelGrid.Length, context.columns[i].joints, disposables);
 
 				for (var j = 0; j < viewModels.Length; j++) {
 					var symbolViewModel = viewModels[j];
@@ -35,7 +35,7 @@ namespace Core.App {
 						.AddTo(disposables);
 				}
                 
-				_symbolsViewsFactory.PackToView(viewModels, context.columns[i].joints);
+				_symbolsViewsFactory.PackToView(viewModels);
 			}
             
 			return viewModelGrid;

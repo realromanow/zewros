@@ -35,6 +35,8 @@ namespace Core.Views {
 		protected override void RegisterInitialize () {
 			base.RegisterInitialize();
 
+			transform.SetParent(item.context.joint, false);
+			
 			var duration = _animationSpeedService?.GetAnimationDuration(_defaultDuration) ?? _defaultDuration;
 			var startDelay = _animationSpeedService?.GetAnimationDelay(_startDelay) ?? _startDelay;
 			var defaultDelay = _animationSpeedService?.GetAnimationDelay(_defaultDelay) ?? _defaultDelay;
@@ -44,16 +46,6 @@ namespace Core.Views {
 			item.isWinning
 				.Subscribe(CheckWinningAnimation)
 				.AddTo(bindingDisposable);
-
-			// item.isWinning
-			//     .Subscribe(isWinning => {
-			//         if (isWinning) {
-			//             ShowWinningEffect();
-			//         } else {
-			//             HideWinningEffect();
-			//         }
-			//     })
-			//     .AddTo(bindingDisposable);
 
 			item.expire
 				.Skip(1)
