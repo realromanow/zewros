@@ -74,23 +74,25 @@ namespace Core.Views {
 						.OnComplete(() => Destroy(gameObject));
 				})
 				.AddTo(bindingDisposable);
-
-			// item.context
-			// 	.Skip(1)
-			// 	.Subscribe(context => {
-			// 		var createAnimDelay = startDelay + (defaultDelay * (item.context.Value.fieldOrder + item.context.Value.columnLength));
-			// 		var generationDelay = item.generation <= 0 ? createAnimDelay : duration + startDelay + _winEffectDuration + duration + startDelay + (defaultDelay * (item.context.Value.fieldLength + item.context.Value.columnLength * 2));
-			// 		
-			// 		transform.SetParent(context.joint);
-			// 		transform.DOLocalMoveY(0f, generationDelay)
-			// 			.SetDelay(generationDelay);
-			// 	})
-			// 	.AddTo(bindingDisposable);
 			
 			_creationSequence = DOTween.Sequence();
 
 			var createAnimDelay = startDelay + (defaultDelay * (item.context.Value.fieldOrder + item.context.Value.columnLength));
 			var generationDelay = item.generation <= 0 ? createAnimDelay : duration + startDelay + _winEffectDuration + duration + startDelay + (defaultDelay * (item.context.Value.fieldLength + item.context.Value.columnLength * 2));
+			
+			item.context
+				.Skip(1)
+				.Subscribe(context => {
+					transform.SetParent(context.joint);
+					
+					var swiftDelay = item.generation <= 0 ? createAnimDelay : duration + startDelay + duration + startDelay + (defaultDelay * (item.context.Value.fieldLength + item.context.Value.columnLength * 2));
+					
+					Observable.Timer(TimeSpan.FromSeconds(swiftDelay))
+						.Subscribe(_ => transform.DOLocalMoveY(0, duration))
+						.AddTo(bindingDisposable);
+				})
+				.AddTo(bindingDisposable);
+
 			
 			var createTween = transform.DOLocalMoveY(0f, duration)
 				.SetEase(Ease.OutBounce)

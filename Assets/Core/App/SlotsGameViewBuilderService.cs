@@ -1,10 +1,12 @@
 using Core.Components;
+using Core.Context;
 using Core.Factories;
 using Core.Models;
 using Core.ViewModels;
 using System;
 using System.Collections.Generic;
 using UniRx;
+using UnityEngine;
 
 namespace Core.App {
 	public class SlotsGameViewBuilderService {
@@ -55,11 +57,31 @@ namespace Core.App {
 					}
 					else {
 						var symbolPackId = symbolsPacks[i].symbols[j].id;
-						// вот здесь нужно найти элемент из _lastViewModels с таким же id
+
+						var foundOldViewModel = false;
+             
+						for (var row = 0; row < _lastViewModels.GetLength(0); row++) {
+							for (var col = 0; col < _lastViewModels.GetLength(1); col++) {
+								if (_lastViewModels[row, col].id != symbolPackId) continue;
+
+								var existingViewModel = _lastViewModels[row, col];
+								existingViewModel.UpdateContext(
+									new SymbolViewContext(
+										i * j,
+										symbolsPacks[i].packLength,
+										symbolsPacks.Length * symbolsPacks[i].packLength, 
+										i,
+										contextComponent.columns[i].joints[j]));
+								
+								foundOldViewModel = true;
+								break;
+							}
+							if (foundOldViewModel) break;
+						}
 					}
 				}
 			}
-			
+    
 			_symbolsViewsFactory.PackToView(updatedSymbols);
 		}
 	}
