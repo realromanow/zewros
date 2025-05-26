@@ -47,7 +47,9 @@ namespace Core.Views {
 			
 			_winningEffect.SetActive(false);
 
-			PrepareWinAnimation(item.isWinner);
+			item.isWinner
+				.Subscribe(PrepareWinAnimation)
+				.AddTo(bindingDisposable);
 
 			var duration = _defaultDuration;
 			var startDelay = _startDelay;
@@ -64,9 +66,11 @@ namespace Core.Views {
 				.Subscribe(_ => {
 					_creationSequence.Complete();
 					_winTimerSubject.OnCompleted();
+					
+					if (item.isWinner.Value) _shatterEffect.InitShader();
 
 					var expireDuration = _defaultDuration;
-					var expireDelay = item.isWinner ? startDelay + defaultDelay * item.context.Value.columnOrder : startDelay + (defaultDelay * item.context.Value.fieldOrder);
+					var expireDelay = item.isWinner.Value ? startDelay + defaultDelay * item.context.Value.columnOrder : startDelay + (defaultDelay * item.context.Value.fieldOrder);
 					
 					transform.DOLocalMoveY(-10f, expireDuration)
 						.SetEase(Ease.InOutBounce)

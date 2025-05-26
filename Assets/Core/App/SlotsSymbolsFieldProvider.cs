@@ -3,12 +3,12 @@ using System;
 using UniRx;
 
 namespace Core.App {
-	public class SlotsGameFieldProvider : IDisposable {
+	public class SlotsSymbolsFieldProvider : IDisposable {
 		public IReadOnlyReactiveProperty<SlotsFieldViewContextComponent> activeField => _activeField;
 		
 		private readonly ReactiveProperty<SlotsFieldViewContextComponent> _activeField = new();
 
-		public SlotsGameFieldProvider (SlotsFieldViewContextComponent contextComponent) {
+		public SlotsSymbolsFieldProvider (SlotsFieldViewContextComponent contextComponent) {
 			_activeField.Value = contextComponent;
 		}
 

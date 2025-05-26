@@ -1,11 +1,13 @@
 using Core.Data;
 using Core.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using UniRx;
 
 namespace Core.Factories {
 	public class SymbolsPacksBuilder {
-		public virtual SymbolsPackModel GetPack (string seed, int packLength) {
+		public SymbolsPackModel GetPack (string seed, int packLength, ICollection<IDisposable> disposable) {
 			var numericSeed = seed.GetHashCode();
 
 			var random = new Random(numericSeed);
@@ -17,17 +19,17 @@ namespace Core.Factories {
 			for (var i = 0; i < packLength; i++) {
 				var randomIndex = random.Next(0, symbolValues.Length);
 
-				symbols[i] = new SymbolModel(symbolValues[randomIndex], 0, seed + $"{i}");
+				symbols[i] = new SymbolModel(symbolValues[randomIndex], 0, seed + $"{i}").AddTo(disposable);
 			}
 
 			return new SymbolsPackModel(symbols, seed, 0);
 		}
 
-		public void RebuildPack (SymbolsPackModel pack) {
+		public void RebuildWinnersFromPack (SymbolsPackModel pack, ICollection<IDisposable> disposable) {
 			var symbolValues = Enum.GetValues(typeof(SymbolId)).Cast<SymbolId>().ToArray();
 			
 			for (var i = pack.packLength - 1; i >= 0; i--) {
-				if (pack.symbols[i].isWinner) {
+				if (pack.symbols[i].isWinner.Value) {
 					for (var j = i; j < pack.packLength - 1; j++) {
 						pack.symbols[j] = pack.symbols[j + 1];
 					}
@@ -45,7 +47,7 @@ namespace Core.Factories {
 						symbolValues[random.Next(0, symbolValues.Length)],
 						pack.packGeneration + 1,
 						pack.seed + $"{i}"
-					);
+					).AddTo(disposable);
 				}
 			}
 		}

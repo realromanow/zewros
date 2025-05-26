@@ -24,7 +24,7 @@ namespace Core.Factories {
 		}
 
 		public SymbolViewModel CreateViewModel (SymbolModel symbolModel, int columnOrder, int fieldOrder, int packLength, int fieldLength, Transform joint) {
-			return new SymbolViewModel(symbolModel, symbolModel.isWinner, new SymbolViewContext(fieldOrder, packLength, fieldLength, columnOrder, joint));
+			return new SymbolViewModel(symbolModel, new SymbolViewContext(fieldOrder, packLength, fieldLength, columnOrder, joint));
 		}
 	}
 }

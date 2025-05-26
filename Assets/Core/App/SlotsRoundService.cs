@@ -1,10 +1,9 @@
+using Core.Components;
 using Core.Config;
 using Core.Factories;
 using Core.Models;
 using System;
-using System.Linq;
 using UniRx;
-using UnityEngine;
 
 namespace Core.App {
 	public class SlotsRoundService : IDisposable {
@@ -16,8 +15,8 @@ namespace Core.App {
 		private readonly ReactiveProperty<SymbolsWinsResultModel> _lastWinResult = new();
 
 		private readonly SymbolsPacksBuilder _symbolsPacksBuilder;
-		private readonly SlotsGameViewBuilderService _viewBuilderService;
-		private readonly SlotsGameFieldProvider _fieldProvider;
+		private readonly SlotsSymbolsViewModelMapperService _symbolsViewModelMapperService;
+		private readonly SlotsSymbolsFieldProvider _fieldProvider;
 		private readonly SlotsWinningSymbolsService _slotsWinningSymbolsService;
 		private readonly PaylineSettings _paylineSettings;
 
@@ -27,12 +26,12 @@ namespace Core.App {
 
 		public SlotsRoundService (
 			SymbolsPacksBuilder symbolsPacksBuilder,
-			SlotsGameViewBuilderService viewBuilderService,
-			SlotsGameFieldProvider fieldProvider,
+			SlotsSymbolsViewModelMapperService symbolsViewModelMapperService,
+			SlotsSymbolsFieldProvider fieldProvider,
 			SlotsWinningSymbolsService slotsWinningSymbolsService,
 			PaylineSettings paylineSettings) {
 			_symbolsPacksBuilder = symbolsPacksBuilder;
-			_viewBuilderService = viewBuilderService;
+			_symbolsViewModelMapperService = symbolsViewModelMapperService;
 			_fieldProvider = fieldProvider;
 			_slotsWinningSymbolsService = slotsWinningSymbolsService;
 			_paylineSettings = paylineSettings;
@@ -41,39 +40,48 @@ namespace Core.App {
 		public void MakeSpin () {
 			_newRound.Execute();
 
-			var packsCreated = 0;
 			var context = _fieldProvider.activeField.Value;
 
+			var symbolsPacks = CreateSymbolsPacks(context);
+
+			_symbolsViewModelMapperService.InitializeViews(symbolsPacks, context, _newRound, _compositeDisposable);
+
+			CheckForWins(symbolsPacks, context);
+		}
+
+		private SymbolsPackModel[] CreateSymbolsPacks (SlotsFieldViewContextComponent context) {
+			var packsCreated = 0;
+			
 			var symbolsPacks = new SymbolsPackModel[context.columns.Length];
 
 			for (var i = 0; i < symbolsPacks.Length; i++) {
 				var packLength = context.columns[i].joints.Length;
 
-				symbolsPacks[i] =
-					_symbolsPacksBuilder
-						.GetPack(DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ") + packsCreated++,
-							packLength);
+				symbolsPacks[i] = _symbolsPacksBuilder.GetPack(DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ") + packsCreated++, packLength, _compositeDisposable);
 			}
 
-			CheckForWins(symbolsPacks);
-
-			_viewBuilderService.BuildViews(symbolsPacks, context, _newRound, _compositeDisposable);
-			
-			foreach (var pack in symbolsPacks) {
-				_symbolsPacksBuilder.RebuildPack(pack);
-			}
-			
-			_viewBuilderService.RebuildViews(symbolsPacks, context, _newRound, _compositeDisposable);
+			return symbolsPacks;
 		}
 
-		private void CheckForWins (SymbolsPackModel[] symbols) {
+		private void RebuildForWins (SymbolsPackModel[] symbolsPacks, SlotsFieldViewContextComponent context) {
+			foreach (var pack in symbolsPacks) {
+				_symbolsPacksBuilder.RebuildWinnersFromPack(pack, _compositeDisposable);
+			}
+
+			_symbolsViewModelMapperService.RebuildViews(symbolsPacks, context, _newRound, _compositeDisposable);
+		}
+
+		private void CheckForWins (SymbolsPackModel[] symbols, SlotsFieldViewContextComponent context) {
 			var symbolsArray = SymbolsPackToGridArray(symbols);
 			var grid = GetSymbolsGridModel(symbolsArray);
 
 			var winResult = _slotsWinningSymbolsService.CheckWins(grid, _currentBetPerLine);
 			_lastWinResult.Value = winResult;
 
-			if (winResult.hasWins) MarkWinningSymbols(symbolsArray, winResult);
+			if (winResult.hasWins) {
+				MarkWinningSymbols(symbolsArray, winResult);
+				RebuildForWins(symbols, context);
+			}
 		}
 
 		private static SymbolsGridModel GetSymbolsGridModel (SymbolModel[,] symbols) {
@@ -104,7 +112,7 @@ namespace Core.App {
 					array[i, j] = symbolsPacks[i].symbols[j];
 				}
 			}
-			
+
 			return array;
 		}
 
