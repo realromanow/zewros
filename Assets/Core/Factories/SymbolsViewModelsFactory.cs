@@ -9,7 +9,15 @@ namespace Core.Factories {
 			var viewModels = new SymbolViewModel[symbolPack.packLength];
 
 			for (var i = 0; i < viewModels.Length; i++) {
-				viewModels[i] = CreateViewModel(symbolPack.symbols[i], columnOrder, (columnOrder + i) + (symbolPack.packLength * columnOrder), symbolPack.packLength, fieldLength, joints[i]);
+				var fieldOrder = (columnOrder * symbolPack.packLength) + i;
+				
+				viewModels[i] = CreateViewModel(
+					symbolPack.symbols[i],
+					columnOrder, 
+					fieldOrder, 
+					symbolPack.packLength, 
+					fieldLength, 
+					joints[i]);
 			}
 
 			return viewModels;

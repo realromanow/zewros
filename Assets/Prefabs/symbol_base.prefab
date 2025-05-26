@@ -140,7 +140,7 @@ MonoBehaviour:
   _startDelay: 0.2
   _defaultDelay: 0.1
   _defaultDuration: 0.1
-  _winEffectDuration: 2
+  _winEffectDuration: 1.5
   _winEffectScale: 1.4
 --- !u!212 &2056657160465022930
 SpriteRenderer:

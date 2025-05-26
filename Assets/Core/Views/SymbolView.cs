@@ -43,11 +43,11 @@ namespace Core.Views {
 		protected override void RegisterInitialize () {
 			base.RegisterInitialize();
 			
+			transform.SetParent(item.context.Value.joint, false);
+			
 			_winningEffect.SetActive(false);
 
 			PrepareWinAnimation(item.isWinner);
-
-			transform.SetParent(item.context.Value.joint, false);
 
 			var duration = _defaultDuration;
 			var startDelay = _startDelay;
@@ -68,7 +68,7 @@ namespace Core.Views {
 					var expireDuration = _defaultDuration;
 					var expireDelay = item.isWinner ? startDelay + defaultDelay * item.context.Value.columnOrder : startDelay + (defaultDelay * item.context.Value.fieldOrder);
 					
-					var expireTween = transform.DOLocalMoveY(-10f, expireDuration)
+					transform.DOLocalMoveY(-10f, expireDuration)
 						.SetEase(Ease.InOutBounce)
 						.SetDelay(expireDelay)
 						.OnComplete(() => Destroy(gameObject));
@@ -78,17 +78,17 @@ namespace Core.Views {
 			_creationSequence = DOTween.Sequence();
 
 			var createAnimDelay = startDelay + (defaultDelay * (item.context.Value.fieldOrder + item.context.Value.columnLength));
-			var generationDelay = item.generation <= 0 ? createAnimDelay : duration + startDelay + _winEffectDuration + duration + startDelay + (defaultDelay * (item.context.Value.fieldLength + item.context.Value.columnLength * 2));
+			var generationDelay = duration + startDelay + _winEffectDuration + duration + startDelay + (defaultDelay * (item.context.Value.fieldLength + item.context.Value.columnLength * 2));
 			
 			item.context
 				.Skip(1)
 				.Subscribe(context => {
-					transform.SetParent(context.joint);
-					
-					var swiftDelay = item.generation <= 0 ? createAnimDelay : duration + startDelay + duration + startDelay + (defaultDelay * (item.context.Value.fieldLength + item.context.Value.columnLength * 2));
-					
-					Observable.Timer(TimeSpan.FromSeconds(swiftDelay))
-						.Subscribe(_ => transform.DOLocalMoveY(0, duration))
+					Observable.Timer(TimeSpan.FromSeconds(generationDelay))
+						.Subscribe(_ => {
+							transform.SetParent(context.joint);
+							transform.DOLocalMoveY(0, duration)
+								.SetEase(Ease.OutBounce);
+						})
 						.AddTo(bindingDisposable);
 				})
 				.AddTo(bindingDisposable);
@@ -96,7 +96,7 @@ namespace Core.Views {
 			
 			var createTween = transform.DOLocalMoveY(0f, duration)
 				.SetEase(Ease.OutBounce)
-				.SetDelay(generationDelay);
+				.SetDelay(item.generation <= 0 ? createAnimDelay : duration + duration + startDelay + _winEffectDuration + duration + startDelay + (defaultDelay * (item.context.Value.fieldLength + item.context.Value.columnLength * 2)));
 
 			_creationSequence.Append(createTween);
 		}
@@ -117,7 +117,7 @@ namespace Core.Views {
 
 			_glossySpriteEffect.PlayAnim();
 			
-			Observable.Timer(TimeSpan.FromSeconds(_winEffectDuration / 2f))
+			Observable.Timer(TimeSpan.FromSeconds(1f))
 				.TakeUntil(_winTimerSubject)
 				.Subscribe(_ => _shatterEffect.InitShader())
 				.AddTo(bindingDisposable);
@@ -148,7 +148,7 @@ namespace Core.Views {
 
 			_winTimerSubject = new Subject<Unit>();
 
-			var orderDelay = (duration * item.context.Value.columnLength) + startDelay + (defaultDelay * (item.context.Value.fieldLength + item.context.Value.columnLength));
+			var orderDelay = startDelay + (defaultDelay * (item.context.Value.fieldLength + item.context.Value.columnLength));
 			var effectDelay = orderDelay + _defaultDelay;
 
 			Observable.Timer(TimeSpan.FromSeconds(effectDelay))
