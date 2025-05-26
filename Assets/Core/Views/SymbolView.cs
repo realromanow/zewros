@@ -75,17 +75,17 @@ namespace Core.Views {
 				})
 				.AddTo(bindingDisposable);
 
-			item.context
-				.Skip(1)
-				.Subscribe(context => {
-					var createAnimDelay = startDelay + (defaultDelay * (item.context.Value.fieldOrder + item.context.Value.columnLength));
-					var generationDelay = item.generation <= 0 ? createAnimDelay : duration + startDelay + _winEffectDuration + duration + startDelay + (defaultDelay * (item.context.Value.fieldLength + item.context.Value.columnLength * 2));
-					
-					transform.SetParent(context.joint);
-					transform.DOLocalMoveY(0f, generationDelay)
-						.SetDelay(generationDelay);
-				})
-				.AddTo(bindingDisposable);
+			// item.context
+			// 	.Skip(1)
+			// 	.Subscribe(context => {
+			// 		var createAnimDelay = startDelay + (defaultDelay * (item.context.Value.fieldOrder + item.context.Value.columnLength));
+			// 		var generationDelay = item.generation <= 0 ? createAnimDelay : duration + startDelay + _winEffectDuration + duration + startDelay + (defaultDelay * (item.context.Value.fieldLength + item.context.Value.columnLength * 2));
+			// 		
+			// 		transform.SetParent(context.joint);
+			// 		transform.DOLocalMoveY(0f, generationDelay)
+			// 			.SetDelay(generationDelay);
+			// 	})
+			// 	.AddTo(bindingDisposable);
 			
 			_creationSequence = DOTween.Sequence();
 

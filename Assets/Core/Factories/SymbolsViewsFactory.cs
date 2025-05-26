@@ -20,7 +20,7 @@ namespace Core.Factories {
 		}
 
 		private void CreateView (SymbolViewModel viewModel) {
-			var sprite = _symbolsCards[viewModel.id];
+			var sprite = _symbolsCards[viewModel.symbolId];
             
 			var instance = Object.Instantiate(_symbolViewPrefab);
 

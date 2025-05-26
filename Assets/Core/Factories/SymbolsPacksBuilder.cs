@@ -48,8 +48,6 @@ namespace Core.Factories {
 					);
 				}
 			}
-			
-			pack.UpdateGeneration(pack.packGeneration + 1);
 		}
 	}
 }

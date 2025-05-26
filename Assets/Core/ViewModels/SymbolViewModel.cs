@@ -10,7 +10,8 @@ namespace Core.ViewModels {
 		public bool isWinner { get; }
 		public int generation => _symbolModel.generation;
 		public IReadOnlyReactiveProperty<SymbolViewContext> context => _symbolContext;
-		public SymbolId id => _symbolModel.symbolId;
+		public SymbolId symbolId => _symbolModel.symbolId;
+		public string id => _symbolModel.id;
 
 		private readonly ReactiveProperty<SymbolViewContext> _symbolContext;
 		private readonly SymbolModel _symbolModel;

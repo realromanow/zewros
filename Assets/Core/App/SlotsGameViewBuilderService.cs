@@ -45,17 +45,14 @@ namespace Core.App {
 
 			for (var i = 0; i < symbolsPacks.Length; i++) {
 				for (var j = 0; j < symbolsPacks[i].packLength; j++) {
-					if (symbolsPacks[i].packGeneration > symbolsPacks[i].symbols[j].generation) {
-						var viewModel = _symbolsViewModelsFactory.CreateViewModel(symbolsPacks[i].symbols[j], i, i + j, symbolsPacks[i].packLength, symbolsPacks.Length * symbolsPacks[i].packLength, contextComponent.columns[i].joints[j]);
-						viewModel.AddTo(disposables);
-						expireViews.Subscribe(_ => viewModel.Expire())
-							.AddTo(disposables);
+					if (symbolsPacks[i].packGeneration >= symbolsPacks[i].symbols[j].generation) continue;
 
-						updatedSymbols.Add(viewModel);
-					}
-					else {
-						
-					}
+					var viewModel = _symbolsViewModelsFactory.CreateViewModel(symbolsPacks[i].symbols[j], i, i * j, symbolsPacks[i].packLength, symbolsPacks.Length * symbolsPacks[i].packLength, contextComponent.columns[i].joints[j]);
+					viewModel.AddTo(disposables);
+					expireViews.Subscribe(_ => viewModel.Expire())
+						.AddTo(disposables);
+
+					updatedSymbols.Add(viewModel);
 				}
 			}
 
