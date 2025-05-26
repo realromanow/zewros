@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Core.UI.App {
 	public class DebugPanel : MonoBehaviour {
 		private TestSymbolsPacksFactory _testFactory;
-		private WinningSymbolsService _winningService;
+		private SlotsWinningSymbolsService _slotsWinningService;
 		private bool _showDebug = false;
         
-		public void Initialize (TestSymbolsPacksFactory testFactory, WinningSymbolsService winningService) {
+		public void Initialize (TestSymbolsPacksFactory testFactory, SlotsWinningSymbolsService slotsWinningService) {
 			_testFactory = testFactory;
-			_winningService = winningService;
+			_slotsWinningService = slotsWinningService;
 		}
         
 		void Update() {
@@ -29,10 +29,10 @@ namespace Core.UI.App {
 			GUILayout.Label("Test Mode Controls:");
             
 			if (GUILayout.Button("Toggle Test Mode")) {
-				_winningService.testMode = !_winningService.testMode;
+				_slotsWinningService.testMode = !_slotsWinningService.testMode;
 			}
             
-			GUILayout.Label($"Test Mode: {_winningService.testMode}");
+			GUILayout.Label($"Test Mode: {_slotsWinningService.testMode}");
             
 			if (GUILayout.Button("Force ZEUS wins")) {
 				_testFactory.SetTestMode(true, SymbolId.ZEWS);

@@ -23,8 +23,7 @@ namespace Core.Factories {
 			var sprite = _symbolsCards[viewModel.id];
             
 			var instance = Object.Instantiate(_symbolViewPrefab);
-            
-			instance.InjectDependencies(_animationSpeedService);
+
 			instance.SetItem(viewModel, viewModel.GetHashCode().ToString());
 			instance.SetSprite(sprite);
 		}

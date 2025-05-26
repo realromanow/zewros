@@ -1,46 +1,43 @@
 using Core.Config;
 using Core.Factories;
 using Core.Models;
-using Core.ViewModels;
 using System;
 using UniRx;
+using UnityEngine;
 
 namespace Core.App {
 	public class SlotsRoundService : IDisposable {
 		public IReadOnlyReactiveProperty<bool> canSpin => _canSpin;
-		public IReadOnlyReactiveProperty<WinCheckResult> lastWinResult => _lastWinResult;
+		public IReadOnlyReactiveProperty<SymbolsWinsResultModel> lastWinResult => _lastWinResult;
 
 		private readonly ReactiveCommand _newRound = new();
 		private readonly ReactiveProperty<bool> _canSpin = new(true);
-		private readonly ReactiveProperty<WinCheckResult> _lastWinResult = new();
+		private readonly ReactiveProperty<SymbolsWinsResultModel> _lastWinResult = new();
 
 		private readonly SymbolsPacksFactory _symbolsPacksFactory;
 		private readonly SlotsGameViewBuilderService _viewBuilderService;
 		private readonly SlotsGameFieldProvider _fieldProvider;
-		private readonly WinningSymbolsService _winningSymbolsService;
+		private readonly SlotsWinningSymbolsService _slotsWinningSymbolsService;
 		private readonly PaylineSettings _paylineSettings;
 
 		private readonly CompositeDisposable _compositeDisposable = new();
-		private SymbolViewModel[,] _currentViewModels;
-		private decimal _currentBetPerLine = 1m; // Базовая ставка на линию
+
+		private decimal _currentBetPerLine = 1m;
 
 		public SlotsRoundService (
 			SymbolsPacksFactory symbolsPacksFactory,
 			SlotsGameViewBuilderService viewBuilderService,
 			SlotsGameFieldProvider fieldProvider,
-			WinningSymbolsService winningSymbolsService,
+			SlotsWinningSymbolsService slotsWinningSymbolsService,
 			PaylineSettings paylineSettings) {
 			_symbolsPacksFactory = symbolsPacksFactory;
 			_viewBuilderService = viewBuilderService;
 			_fieldProvider = fieldProvider;
-			_winningSymbolsService = winningSymbolsService;
+			_slotsWinningSymbolsService = slotsWinningSymbolsService;
 			_paylineSettings = paylineSettings;
 		}
 
 		public void MakeSpin () {
-			if (!_canSpin.Value) return;
-
-			_canSpin.Value = false;
 			_newRound.Execute();
 
 			var packsCreated = 0;
@@ -57,46 +54,57 @@ namespace Core.App {
 							packLength);
 			}
 
-			_currentViewModels = _viewBuilderService.BuildViews(symbolsPacks, context, _newRound, _compositeDisposable);
+			CheckForWins(symbolsPacks);
 
-			CheckForWins();
+			_viewBuilderService.BuildViews(symbolsPacks, context, _newRound, _compositeDisposable);
+
+			// var winSymbols = _currentViewModels.Cast<SymbolViewModel>().Where(x => x.isWinning.Value);
+			//
+			// foreach (var winSymbol in winSymbols) {
+			// 	winSymbol.Expire();
+			// }
 		}
 
-		private void CheckForWins () {
-			if (_currentViewModels == null) return;
+		private void CheckForWins (SymbolsPackModel[] symbols) {
+			var symbolsArray = SymbolsPackToGridArray(symbols);
+			var grid = GetSymbolsGridModel(symbolsArray);
 
-			var grid = new SymbolsGridModel(_currentViewModels.GetLength(0), _currentViewModels.GetLength(1));
+			var winResult = _slotsWinningSymbolsService.CheckWins(grid, _currentBetPerLine);
+			_lastWinResult.Value = winResult;
+
+			if (winResult.hasWins) MarkWinningSymbols(symbolsArray, winResult);
+		}
+
+		private static SymbolsGridModel GetSymbolsGridModel (SymbolModel[,] symbols) {
+			var grid = new SymbolsGridModel(symbols.GetLength(0), symbols.GetLength(1));
 
 			for (var x = 0; x < grid.width; x++) {
 				for (var y = 0; y < grid.height; y++) {
-					grid.SetSymbol(x, y, _currentViewModels[x, y].id);
+					grid.SetSymbol(x, y, symbols[x, y].id);
 				}
 			}
 
-			var winResult = _winningSymbolsService.CheckWins(grid, _currentBetPerLine);
-			_lastWinResult.Value = winResult;
-
-			if (winResult.HasWins) ShowWinningSymbols(winResult);
-
-			_canSpin.Value = true;
+			return grid;
 		}
 
-		private void ShowWinningSymbols (WinCheckResult winResult) {
-			foreach (var winningPos in winResult.allWinningPositions) {
-				if (winningPos.x >= 0 && winningPos.x < _currentViewModels.GetLength(0) &&
-					winningPos.y >= 0 && winningPos.y < _currentViewModels.GetLength(1))
-					_currentViewModels[winningPos.x, winningPos.y]?.SetWinning(true);
+		private static void MarkWinningSymbols (SymbolModel[,] symbols, SymbolsWinsResultModel symbolsWinResultModel) {
+			foreach (var winningPos in symbolsWinResultModel.allWinningPositions) {
+				if (winningPos.x >= 0 && winningPos.x < symbols.GetLength(0) &&
+					winningPos.y >= 0 && winningPos.y < symbols.GetLength(1))
+					symbols[winningPos.x, winningPos.y].MarkAsWinner();
 			}
 		}
 
-		private void ClearWinningSymbols () {
-			if (_currentViewModels == null) return;
+		private static SymbolModel[,] SymbolsPackToGridArray (SymbolsPackModel[] symbolsPacks) {
+			var array = new SymbolModel[symbolsPacks.Length, symbolsPacks[0].packLength];
 
-			for (var x = 0; x < _currentViewModels.GetLength(0); x++) {
-				for (var y = 0; y < _currentViewModels.GetLength(1); y++) {
-					_currentViewModels[x, y]?.SetWinning(false);
+			for (var i = 0; i < symbolsPacks.Length; i++) {
+				for (var j = 0; j < symbolsPacks[i].packLength; j++) {
+					array[i, j] = symbolsPacks[i].symbols[j];
 				}
 			}
+			
+			return array;
 		}
 
 		public void Dispose () {

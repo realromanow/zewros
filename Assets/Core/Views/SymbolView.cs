@@ -1,3 +1,4 @@
+using Core.Utils;
 using Core.ViewModels;
 using DG.Tweening;
 using Plugins.Modern.DI.Binding;
@@ -12,70 +13,82 @@ namespace Core.Views {
 
 		[SerializeField]
 		private GameObject _winningEffect;
+		
+		[SerializeField]
+		private GlossySpriteEffect _glossySpriteEffect;
+		
+		[SerializeField]
+		private ShatterEffect _shatterEffect;
 
 		[SerializeField]
-		private float _startDelay = 0.1f;
+		private float _startDelay;
 
 		[SerializeField]
-		private float _defaultDelay = 0.05f;
+		private float _defaultDelay;
 
 		[SerializeField]
-		private float _defaultDuration = 0.5f;
+		private float _defaultDuration;
 
-		private Sequence _winningAnimation;
-		private Tween _liveAnimation;
-		private AnimationSpeedService _animationSpeedService;
+		[SerializeField]
+		private float _winEffectDuration;
+
+		[SerializeField]
+		private float _winEffectScale;
+
+		private Sequence _creationSequence;
+		private Sequence _winningSequence;
 
 		private Subject<Unit> _winTimerSubject = new();
-
-		public void InjectDependencies (AnimationSpeedService animationSpeedService) {
-			_animationSpeedService = animationSpeedService;
-		}
 
 		protected override void RegisterInitialize () {
 			base.RegisterInitialize();
 
+			_winningEffect.SetActive(false);
+
+			PrepareWinAnimation(item.isWinner);
+
 			transform.SetParent(item.context.joint, false);
-			
-			var duration = _animationSpeedService?.GetAnimationDuration(_defaultDuration) ?? _defaultDuration;
-			var startDelay = _animationSpeedService?.GetAnimationDelay(_startDelay) ?? _startDelay;
-			var defaultDelay = _animationSpeedService?.GetAnimationDelay(_defaultDelay) ?? _defaultDelay;
 
-			HideWinningEffect();
-
-			item.isWinning
-				.Subscribe(CheckWinningAnimation)
-				.AddTo(bindingDisposable);
+			var duration = _defaultDuration;
+			var startDelay = _startDelay;
+			var defaultDelay = _defaultDelay;
 
 			item.expire
 				.Skip(1)
 				.Take(1)
-				.Subscribe(_ => Destroy(gameObject))
+				.Subscribe(_ => { Destroy(gameObject); })
 				.AddTo(bindingDisposable);
 
 			item.expire
 				.Take(1)
 				.Subscribe(_ => {
-					_liveAnimation?.Complete();
+					_creationSequence.Complete();
 					_winTimerSubject.OnCompleted();
 
-					var expireDuration = _animationSpeedService?.GetAnimationDuration(_defaultDuration) ?? _defaultDuration;
-					var expireDelay = _animationSpeedService?.GetAnimationDelay(startDelay + (defaultDelay * item.context.order)) ?? startDelay + (defaultDelay * item.context.order);
-
-					_liveAnimation = transform.DOLocalMoveY(-10f, expireDuration)
+					var expireDuration = _defaultDuration;
+					var expireDelay = item.isWinner ? startDelay + defaultDelay * item.context.columnOrder : startDelay + (defaultDelay * item.context.fieldOrder);
+					
+					var expireTween = transform.DOLocalMoveY(-10f, expireDuration)
 						.SetEase(Ease.InOutBounce)
-						.SetDelay(expireDelay);
+						.SetDelay(expireDelay)
+						.OnComplete(() => Destroy(gameObject));
 				})
 				.AddTo(bindingDisposable);
 
-			_liveAnimation = transform.DOLocalMoveY(0f, duration)
+			_creationSequence = DOTween.Sequence();
+
+			var createTween = transform.DOLocalMoveY(0f, duration)
 				.SetEase(Ease.OutBounce)
-				.SetDelay(startDelay + (defaultDelay * (item.context.order + item.context.rowOrdersLength)));
+				.SetDelay(startDelay + (defaultDelay * (item.context.fieldOrder + item.context.columnLength)));
+
+			_creationSequence.Append(createTween);
 		}
 
 		protected override void RegisterDestroy () {
+			_winningSequence?.Kill();
+			_creationSequence?.Kill();
+
 			transform.DOKill();
-			_winningAnimation?.Kill();
 
 			_winTimerSubject.Dispose();
 
@@ -85,38 +98,42 @@ namespace Core.Views {
 		private void ShowWinningEffect () {
 			if (_winningEffect != null) _winningEffect.SetActive(true);
 
-			_winningAnimation?.Kill();
-			_winningAnimation = DOTween.Sequence();
-			_winningAnimation.Append(transform.DOScale(1.2f, 0.3f).SetEase(Ease.OutBack));
-			_winningAnimation.Append(transform.DOScale(1f, 0.3f).SetEase(Ease.InBack));
-			_winningAnimation.SetLoops(-1);
+			_glossySpriteEffect.PlayAnim();
+			
+			Observable.Timer(TimeSpan.FromSeconds(1f))
+				.TakeUntil(_winTimerSubject)
+				.Subscribe(_ => _shatterEffect.InitShader())
+				.AddTo(bindingDisposable);
+			
+			transform.DOLocalMove(SpriteOffsetUtils.CalculateOffset(_spriteRenderer, _winEffectScale, OffsetCalculationType.GlobalCenter),
+				_defaultDuration);
 
-			_spriteRenderer.color = new Color(1.2f, 1.2f, 1.2f, 1f);
-			_spriteRenderer.sortingOrder += 1;
+			_winningSequence = DOTween.Sequence();
+			_winningSequence.Append(transform.DOScale(_winEffectScale, _winEffectDuration).SetEase(Ease.OutBack));
+			// _winningSequence.Join(transform.DORotate(new Vector3(0f, 0f, 10f), _winEffectDuration).SetEase(Ease.InOutBack));
+			// _winningSequence.Append(transform.DORotate(new Vector3(0f, 360f, 0f), _winEffectDuration * 5f, RotateMode.FastBeyond360).SetEase(Ease.InOutBack));
+			// _winningSequence.Append(transform.DOScale(1f, _winEffectDuration).SetEase(Ease.InBack));
+			// _winningSequence.SetLoops(-1);
+
+			_spriteRenderer.sortingOrder = 10;
+			_spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
 		}
 
-		private void HideWinningEffect () {
-			if (_winningEffect != null) _winningEffect.SetActive(false);
+		private void OnPostCreateAnimationCall () {}
 
-			_winningAnimation?.Kill();
-			transform.localScale = Vector3.one;
-
-			_spriteRenderer.color = Color.white;
-		}
-
-		private void OnPostCreateAnimationCall () {
-		}
-
-		private void CheckWinningAnimation (bool isWinning) {
+		private void PrepareWinAnimation (bool isWinning) {
 			if (!isWinning) return;
 
-			var duration = _animationSpeedService?.GetAnimationDuration(_defaultDuration) ?? _defaultDuration;
-			var startDelay = _animationSpeedService?.GetAnimationDelay(_startDelay) ?? _startDelay;
-			var defaultDelay = _animationSpeedService?.GetAnimationDelay(_defaultDelay) ?? _defaultDelay;
+			var duration = _defaultDuration;
+			var startDelay = _startDelay;
+			var defaultDelay = _defaultDelay;
 
 			_winTimerSubject = new Subject<Unit>();
 
-			Observable.Timer(TimeSpan.FromSeconds((duration * (item.context.totalOrdersLength)) + startDelay))
+			var orderDelay = (duration * item.context.columnLength) + startDelay + (defaultDelay * (item.context.fieldLength + item.context.columnLength));
+			var effectDelay = orderDelay + _defaultDelay;
+
+			Observable.Timer(TimeSpan.FromSeconds(effectDelay))
 				.TakeUntil(_winTimerSubject)
 				.Subscribe(_ => {}, ShowWinningEffect)
 				.AddTo(bindingDisposable);

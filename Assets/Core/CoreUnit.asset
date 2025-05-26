@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a350154e6fd146e793f7727718149ed5, type: 3}
   m_Name: CoreUnit
   m_EditorClassIdentifier: 
-  _viewContextPrefab: {fileID: 7679415858898665763, guid: 9b88dfc863ba14d0baebf147d4e4cceb, type: 3}
+  _fieldViewContextComponentPrefab: {fileID: 7679415858898665763, guid: 9b88dfc863ba14d0baebf147d4e4cceb, type: 3}
   _screens:
     _serializedList:
     - Key: canvas
@@ -22,27 +22,27 @@ MonoBehaviour:
   _symbolsCards:
     _serializedList:
     - Key: 0
-      Value: {fileID: 21300000, guid: c802840d998ca429fbbc3b09f2a85fa2, type: 3}
+      Value: {fileID: 21300000, guid: fbadf0413958f44e88e11f050bc9c072, type: 3}
     - Key: 1
-      Value: {fileID: 21300000, guid: 398da1e4d9b1348ffaa7a8512dfbae1f, type: 3}
+      Value: {fileID: 21300000, guid: 27422d02ba69c4a01881c9698deaf1fd, type: 3}
     - Key: 2
-      Value: {fileID: 21300000, guid: 021d2e9ea47224268b7f35e35d837d50, type: 3}
+      Value: {fileID: 21300000, guid: 4e41143f9a46f48d5992742c82aa6906, type: 3}
     - Key: 3
-      Value: {fileID: 21300000, guid: c608018be839349ae81af75ad8a8da8f, type: 3}
+      Value: {fileID: 21300000, guid: 291646f5752ef447b9bd82aef28337c6, type: 3}
     - Key: 4
-      Value: {fileID: 21300000, guid: c2f0a520cd7044f1b9c50bf3635e86b9, type: 3}
+      Value: {fileID: 21300000, guid: ed01d5396ad4b4b9faf3b909b3bc25c0, type: 3}
     - Key: 5
-      Value: {fileID: 21300000, guid: 30bd05839a2ee45c8ad1f47700a0f935, type: 3}
+      Value: {fileID: 21300000, guid: a9c3424feb26e49819fa4417569c0da9, type: 3}
     - Key: 6
-      Value: {fileID: 21300000, guid: 04a54fbe34ce34b9d815cbb373611b3c, type: 3}
+      Value: {fileID: 21300000, guid: eaf109e9c1132409fb96dcb2420000fa, type: 3}
     - Key: 7
-      Value: {fileID: 21300000, guid: d1e2052b95c6d4194a92796e2eccfe95, type: 3}
+      Value: {fileID: 21300000, guid: a7a4d3b78155641d0951e1f31e9956d6, type: 3}
     - Key: 8
-      Value: {fileID: 21300000, guid: 2f6a762f227344b65a38ed6196e0e5cb, type: 3}
+      Value: {fileID: 21300000, guid: 97541c02695994c6ebc232f179fc0415, type: 3}
     - Key: 9
-      Value: {fileID: 21300000, guid: 005e97a8e1c0147dc93b55630660c63e, type: 3}
+      Value: {fileID: 21300000, guid: 94b6948367a94451ca0cd8096dc95c7a, type: 3}
     - Key: 10
-      Value: {fileID: 21300000, guid: be2ae0fb4b0db4b7696e0f8ee28252d0, type: 3}
+      Value: {fileID: 21300000, guid: 7d227ebfcb4954c988407782646cb953, type: 3}
   _symbolViewPrefab: {fileID: 6204332918011709743, guid: 5a3f3417c8b9f4c90b70e307cb74ef8a, type: 3}
   _paylineSettings: {fileID: 11400000, guid: bd92d846bfad040088e1814ffca4e475, type: 2}
   _payoutSettings: {fileID: 11400000, guid: 5914923b92ec048ed98374cbc0158d86, type: 2}

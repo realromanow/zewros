@@ -15,7 +15,7 @@ namespace Core.Units {
 	[CreateAssetMenu(menuName = "Core/Units/Create")]
 	public class CoreUnit : ModernAppUnit {
 		[SerializeField]
-		private SlotsViewContext _viewContextPrefab;
+		private SlotsFieldViewContextComponent _fieldViewContextComponentPrefab;
         
 		[SerializeField]
 		private SerializedDictionary<string, GameObject> _screens;
@@ -42,17 +42,17 @@ namespace Core.Units {
 			componentsRegistry.Instantiate<SymbolsViewModelsFactory>();
 			componentsRegistry.Instantiate<SymbolsViewsFactory>(_symbolsCards, _symbolViewPrefab);
 
-			componentsRegistry.Instantiate<SlotsGameFieldProvider>(Instantiate(_viewContextPrefab));
+			componentsRegistry.Instantiate<SlotsGameFieldProvider>(Instantiate(_fieldViewContextComponentPrefab));
 			componentsRegistry.Instantiate<SlotsGameViewBuilderService>();
             
-			componentsRegistry.Instantiate<WinningSymbolsService>(_paylineSettings, _payoutSettings);
+			componentsRegistry.Instantiate<SlotsWinningSymbolsService>(_paylineSettings, _payoutSettings);
 			componentsRegistry.Instantiate<SlotsRoundService>(_paylineSettings);
 			componentsRegistry.Instantiate<SlotsGameScreenService>();
 			componentsRegistry.Instantiate<SlotsGameStartService>().StartGame();
 			
 			FindObjectOfType<DebugPanel>()
 				.Initialize(componentsRegistry.Return<TestSymbolsPacksFactory>(),
-					componentsRegistry.Return<WinningSymbolsService>());
+					componentsRegistry.Return<SlotsWinningSymbolsService>());
 			
 			// FindObjectOfType<SpeedToggle>()
 			// 	.Initialize(componentsRegistry.Return<AnimationSpeedService>());
