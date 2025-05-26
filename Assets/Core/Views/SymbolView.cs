@@ -42,12 +42,12 @@ namespace Core.Views {
 
 		protected override void RegisterInitialize () {
 			base.RegisterInitialize();
-
+			
 			_winningEffect.SetActive(false);
 
 			PrepareWinAnimation(item.isWinner);
 
-			transform.SetParent(item.context.joint, false);
+			transform.SetParent(item.context.Value.joint, false);
 
 			var duration = _defaultDuration;
 			var startDelay = _startDelay;
@@ -66,7 +66,7 @@ namespace Core.Views {
 					_winTimerSubject.OnCompleted();
 
 					var expireDuration = _defaultDuration;
-					var expireDelay = item.isWinner ? startDelay + defaultDelay * item.context.columnOrder : startDelay + (defaultDelay * item.context.fieldOrder);
+					var expireDelay = item.isWinner ? startDelay + defaultDelay * item.context.Value.columnOrder : startDelay + (defaultDelay * item.context.Value.fieldOrder);
 					
 					var expireTween = transform.DOLocalMoveY(-10f, expireDuration)
 						.SetEase(Ease.InOutBounce)
@@ -75,11 +75,26 @@ namespace Core.Views {
 				})
 				.AddTo(bindingDisposable);
 
+			item.context
+				.Skip(1)
+				.Subscribe(context => {
+					var createAnimDelay = startDelay + (defaultDelay * (item.context.Value.fieldOrder + item.context.Value.columnLength));
+					var generationDelay = item.generation <= 0 ? createAnimDelay : duration + startDelay + _winEffectDuration + duration + startDelay + (defaultDelay * (item.context.Value.fieldLength + item.context.Value.columnLength * 2));
+					
+					transform.SetParent(context.joint);
+					transform.DOLocalMoveY(0f, generationDelay)
+						.SetDelay(generationDelay);
+				})
+				.AddTo(bindingDisposable);
+			
 			_creationSequence = DOTween.Sequence();
 
+			var createAnimDelay = startDelay + (defaultDelay * (item.context.Value.fieldOrder + item.context.Value.columnLength));
+			var generationDelay = item.generation <= 0 ? createAnimDelay : duration + startDelay + _winEffectDuration + duration + startDelay + (defaultDelay * (item.context.Value.fieldLength + item.context.Value.columnLength * 2));
+			
 			var createTween = transform.DOLocalMoveY(0f, duration)
 				.SetEase(Ease.OutBounce)
-				.SetDelay(startDelay + (defaultDelay * (item.context.fieldOrder + item.context.columnLength)));
+				.SetDelay(generationDelay);
 
 			_creationSequence.Append(createTween);
 		}
@@ -100,20 +115,21 @@ namespace Core.Views {
 
 			_glossySpriteEffect.PlayAnim();
 			
-			Observable.Timer(TimeSpan.FromSeconds(1f))
+			Observable.Timer(TimeSpan.FromSeconds(_winEffectDuration / 2f))
 				.TakeUntil(_winTimerSubject)
 				.Subscribe(_ => _shatterEffect.InitShader())
+				.AddTo(bindingDisposable);
+			
+			Observable.Timer(TimeSpan.FromSeconds(_winEffectDuration))
+				.TakeUntil(_winTimerSubject)
+				.Subscribe(_ => item.Expire())
 				.AddTo(bindingDisposable);
 			
 			transform.DOLocalMove(SpriteOffsetUtils.CalculateOffset(_spriteRenderer, _winEffectScale, OffsetCalculationType.GlobalCenter),
 				_defaultDuration);
 
 			_winningSequence = DOTween.Sequence();
-			_winningSequence.Append(transform.DOScale(_winEffectScale, _winEffectDuration).SetEase(Ease.OutBack));
-			// _winningSequence.Join(transform.DORotate(new Vector3(0f, 0f, 10f), _winEffectDuration).SetEase(Ease.InOutBack));
-			// _winningSequence.Append(transform.DORotate(new Vector3(0f, 360f, 0f), _winEffectDuration * 5f, RotateMode.FastBeyond360).SetEase(Ease.InOutBack));
-			// _winningSequence.Append(transform.DOScale(1f, _winEffectDuration).SetEase(Ease.InBack));
-			// _winningSequence.SetLoops(-1);
+			_winningSequence.Append(transform.DOScale(_winEffectScale, 0.2f).SetEase(Ease.OutBack));
 
 			_spriteRenderer.sortingOrder = 10;
 			_spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
@@ -130,7 +146,7 @@ namespace Core.Views {
 
 			_winTimerSubject = new Subject<Unit>();
 
-			var orderDelay = (duration * item.context.columnLength) + startDelay + (defaultDelay * (item.context.fieldLength + item.context.columnLength));
+			var orderDelay = (duration * item.context.Value.columnLength) + startDelay + (defaultDelay * (item.context.Value.fieldLength + item.context.Value.columnLength));
 			var effectDelay = orderDelay + _defaultDelay;
 
 			Observable.Timer(TimeSpan.FromSeconds(effectDelay))

@@ -2,6 +2,7 @@ using Core.Config;
 using Core.Factories;
 using Core.Models;
 using System;
+using System.Linq;
 using UniRx;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ namespace Core.App {
 		private readonly ReactiveProperty<bool> _canSpin = new(true);
 		private readonly ReactiveProperty<SymbolsWinsResultModel> _lastWinResult = new();
 
-		private readonly SymbolsPacksFactory _symbolsPacksFactory;
+		private readonly SymbolsPacksBuilder _symbolsPacksBuilder;
 		private readonly SlotsGameViewBuilderService _viewBuilderService;
 		private readonly SlotsGameFieldProvider _fieldProvider;
 		private readonly SlotsWinningSymbolsService _slotsWinningSymbolsService;
@@ -25,12 +26,12 @@ namespace Core.App {
 		private decimal _currentBetPerLine = 1m;
 
 		public SlotsRoundService (
-			SymbolsPacksFactory symbolsPacksFactory,
+			SymbolsPacksBuilder symbolsPacksBuilder,
 			SlotsGameViewBuilderService viewBuilderService,
 			SlotsGameFieldProvider fieldProvider,
 			SlotsWinningSymbolsService slotsWinningSymbolsService,
 			PaylineSettings paylineSettings) {
-			_symbolsPacksFactory = symbolsPacksFactory;
+			_symbolsPacksBuilder = symbolsPacksBuilder;
 			_viewBuilderService = viewBuilderService;
 			_fieldProvider = fieldProvider;
 			_slotsWinningSymbolsService = slotsWinningSymbolsService;
@@ -49,7 +50,7 @@ namespace Core.App {
 				var packLength = context.columns[i].joints.Length;
 
 				symbolsPacks[i] =
-					_symbolsPacksFactory
+					_symbolsPacksBuilder
 						.GetPack(DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ") + packsCreated++,
 							packLength);
 			}
@@ -57,12 +58,12 @@ namespace Core.App {
 			CheckForWins(symbolsPacks);
 
 			_viewBuilderService.BuildViews(symbolsPacks, context, _newRound, _compositeDisposable);
-
-			// var winSymbols = _currentViewModels.Cast<SymbolViewModel>().Where(x => x.isWinning.Value);
-			//
-			// foreach (var winSymbol in winSymbols) {
-			// 	winSymbol.Expire();
-			// }
+			
+			foreach (var pack in symbolsPacks) {
+				_symbolsPacksBuilder.RebuildPack(pack);
+			}
+			
+			_viewBuilderService.RebuildViews(symbolsPacks, context, _newRound, _compositeDisposable);
 		}
 
 		private void CheckForWins (SymbolsPackModel[] symbols) {
@@ -80,7 +81,7 @@ namespace Core.App {
 
 			for (var x = 0; x < grid.width; x++) {
 				for (var y = 0; y < grid.height; y++) {
-					grid.SetSymbol(x, y, symbols[x, y].id);
+					grid.SetSymbol(x, y, symbols[x, y].symbolId);
 				}
 			}
 

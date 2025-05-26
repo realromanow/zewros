@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace Core.UI.App {
 	public class DebugPanel : MonoBehaviour {
-		private TestSymbolsPacksFactory _testFactory;
+		private TestSymbolsPacksBuilder _testBuilder;
 		private SlotsWinningSymbolsService _slotsWinningService;
 		private bool _showDebug = false;
         
-		public void Initialize (TestSymbolsPacksFactory testFactory, SlotsWinningSymbolsService slotsWinningService) {
-			_testFactory = testFactory;
+		public void Initialize (TestSymbolsPacksBuilder testBuilder, SlotsWinningSymbolsService slotsWinningService) {
+			_testBuilder = testBuilder;
 			_slotsWinningService = slotsWinningService;
 		}
         
@@ -35,21 +35,21 @@ namespace Core.UI.App {
 			GUILayout.Label($"Test Mode: {_slotsWinningService.testMode}");
             
 			if (GUILayout.Button("Force ZEUS wins")) {
-				_testFactory.SetTestMode(true, SymbolId.ZEWS);
+				_testBuilder.SetTestMode(true, SymbolId.ZEWS);
 			}
             
 			if (GUILayout.Button("Force AID wins")) {
-				_testFactory.SetTestMode(true, SymbolId.AID);
+				_testBuilder.SetTestMode(true, SymbolId.AID);
 			}
             
 			if (GUILayout.Button("Force Random wins")) {
 				var symbols = System.Enum.GetValues(typeof(SymbolId));
 				var randomSymbol = (SymbolId)symbols.GetValue(Random.Range(0, symbols.Length));
-				_testFactory.SetTestMode(true, randomSymbol);
+				_testBuilder.SetTestMode(true, randomSymbol);
 			}
             
 			if (GUILayout.Button("Disable forced wins")) {
-				_testFactory.SetTestMode(false);
+				_testBuilder.SetTestMode(false);
 			}
             
 			GUILayout.EndArea();

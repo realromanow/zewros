@@ -140,7 +140,7 @@ MonoBehaviour:
   _startDelay: 0.2
   _defaultDelay: 0.1
   _defaultDuration: 0.1
-  _winEffectDuration: 0.2
+  _winEffectDuration: 2
   _winEffectScale: 1.4
 --- !u!212 &2056657160465022930
 SpriteRenderer:
@@ -211,7 +211,7 @@ MonoBehaviour:
   highlightSpeed: 1
   highlightDirection: {x: 1, y: 1}
   highlightColor: {r: 1, g: 1, b: 1, a: 0.101960786}
-  animationDuration: 2
+  animationDuration: 1
   spriteRenderer: {fileID: 2056657160465022930}
 --- !u!114 &3204495383255193161
 MonoBehaviour:

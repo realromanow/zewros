@@ -28,9 +28,9 @@ namespace Core.Factories {
 			instance.SetSprite(sprite);
 		}
 
-		public void PackToView (SymbolViewModel[] viewModels) {
-			for (var i = 0; i < viewModels.Length; i++) {
-				CreateView(viewModels[i]);
+		public void PackToView (IEnumerable<SymbolViewModel> viewModels) {
+			foreach (var symbolViewModel in viewModels) {
+				CreateView(symbolViewModel);
 			}
 		}
 	}

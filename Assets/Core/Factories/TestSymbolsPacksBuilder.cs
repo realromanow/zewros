@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 namespace Core.Factories {
-    public class TestSymbolsPacksFactory : SymbolsPacksFactory {
+    public class TestSymbolsPacksBuilder : SymbolsPacksBuilder {
         private bool _forceWin = false;
         private SymbolId _forceSymbol = SymbolId.ZEWS;
         private int _testSpinCount = 0;
@@ -30,7 +30,7 @@ namespace Core.Factories {
             if (_testSpinCount % 3 == 0) {
                 Debug.Log($"Test spin {_testSpinCount}: Forcing 5x {_forceSymbol}");
                 for (int i = 0; i < packLength; i++) {
-                    symbols[i] = new SymbolModel(_forceSymbol);
+                    symbols[i] = new SymbolModel(_forceSymbol, 0, "");
                 }
             }
             // Каждый 2-й спин - средний выигрыш (4 символа)
@@ -38,10 +38,10 @@ namespace Core.Factories {
                 Debug.Log($"Test spin {_testSpinCount}: Forcing 4x {_forceSymbol}");
                 for (int i = 0; i < packLength; i++) {
                     if (i < packLength - 1) {
-                        symbols[i] = new SymbolModel(_forceSymbol);
+                        symbols[i] = new SymbolModel(_forceSymbol, 0, "");
                     } else {
                         // Последний символ случайный
-                        symbols[i] = new SymbolModel(GetRandomSymbolExcept(_forceSymbol));
+                        symbols[i] = new SymbolModel(GetRandomSymbolExcept(_forceSymbol), 0, "");
                     }
                 }
             }
@@ -50,15 +50,15 @@ namespace Core.Factories {
                 Debug.Log($"Test spin {_testSpinCount}: Forcing 3x {_forceSymbol}");
                 for (int i = 0; i < packLength; i++) {
                     if (i < 3) {
-                        symbols[i] = new SymbolModel(_forceSymbol);
+                        symbols[i] = new SymbolModel(_forceSymbol, 0, "");
                     } else {
                         // Остальные символы случайные
-                        symbols[i] = new SymbolModel(GetRandomSymbolExcept(_forceSymbol));
+                        symbols[i] = new SymbolModel(GetRandomSymbolExcept(_forceSymbol), 0, "");
                     }
                 }
             }
             
-            return new SymbolsPackModel(symbols);
+            return new SymbolsPackModel(symbols, seed, 0);
         }
         
         private SymbolId GetRandomSymbolExcept(SymbolId except) {
