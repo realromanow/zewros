@@ -55,7 +55,7 @@ namespace Core.App {
 					updatedSymbols.Add(viewModel);
 				}
 			}
-
+			
 			_symbolsViewsFactory.PackToView(updatedSymbols);
 		}
 	}

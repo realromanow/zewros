@@ -17,7 +17,7 @@ namespace Core.Factories {
 			for (var i = 0; i < packLength; i++) {
 				var randomIndex = random.Next(0, symbolValues.Length);
 
-				symbols[i] = new SymbolModel(symbolValues[randomIndex], 0, seed + "i");
+				symbols[i] = new SymbolModel(symbolValues[randomIndex], 0, seed + $"{i}");
 			}
 
 			return new SymbolsPackModel(symbols, seed, 0);
@@ -44,7 +44,7 @@ namespace Core.Factories {
 					pack.symbols[i] = new SymbolModel(
 						symbolValues[random.Next(0, symbolValues.Length)],
 						pack.packGeneration + 1,
-						pack.seed + i
+						pack.seed + $"{i}"
 					);
 				}
 			}
